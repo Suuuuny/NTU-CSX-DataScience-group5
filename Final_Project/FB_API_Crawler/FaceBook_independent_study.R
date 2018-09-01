@@ -43,11 +43,11 @@ share_count_cp <- share_count_cp %>% as.data.frame()
 colnames(share_count_cp) <- "share" 
 
 share_count_cp <- cbind(month, share_count_cp)
-
-Di_plot <- ggplot(share_count_cp, aes(month, share)) + 
+share_count_cp$month <- factor(share_count_cp$month, levels = c("一月上","一月下","二月上","二月下","三月上","三月下","四月上","四月下","五月上","五月下","六月上","六月下")) 
+Di_plot <- ggplot(share_count_cp, aes( month, share )) + 
   geom_bar(stat = "identity", fill = "green3") +
-  ggtitle("丁守中發文分被享比例(每半月)") +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.05))
+  ggtitle("丁守中發文分被享比例(每半月)") 
+  # theme(axis.text.x = element_text(angle = 90, vjust = 0.05))
   
 
 
