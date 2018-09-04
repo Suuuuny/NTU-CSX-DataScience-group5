@@ -16,7 +16,7 @@ library(RColorBrewer)
 library(wordcloud)
 
 # 匯入資料組
-setwd("/Users/Weber/Documents/GitHub/NTU-CSX-DataScience--Group5/Finalproject/FacebookAPI")
+# setwd("/Users/Weber/Documents/GitHub/NTU-CSX-DataScience--Group5/Finalproject/FacebookAPI")
 data <- read.csv("Yao_report.csv", encoding = "UTF-8")
 # 清除NA
 data <- data %>% na.omit()
@@ -38,6 +38,17 @@ Y4<- subset(data , data$month == "04", select = post)
 Y5<- subset(data , data$month == "05", select = post)
 Y6<- subset(data , data$month == "06", select = post)
 
+# 儲存個月份的posts
+save_txt <- function(DATA, x){
+  filename = paste("~/GitHub/NTU-CSX-DataScience-group5/Final_Project/Wordcloud/FB/Yao_wordcloud/Yao",x , ".txt")
+  write.table(DATA, file = filename, sep = "", col.names=FALSE,row.names=FALSE,quote=FALSE)
+}
+save_txt(Y1, 1)
+save_txt(Y2, 2)
+save_txt(Y3, 3)
+save_txt(Y4, 4)
+save_txt(Y5, 5)
+save_txt(Y6, 6)
 # debug
 # Y1 <- Y1[-23,]
 # Di_text <- matrix(data = NA, nrow = 67,ncol = 5 )

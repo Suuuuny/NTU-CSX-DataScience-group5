@@ -13,7 +13,7 @@ library(RColorBrewer)
 library(wordcloud)
 
 # 匯入資料組
-setwd("/Users/Weber/Documents/GitHub/NTU-CSX-DataScience--Group5/Finalproject/FacebookAPI")
+# setwd("/Users/Weber/Documents/GitHub/NTU-CSX-DataScience--Group5/Finalproject/FacebookAPI")
 
 data <- read.csv("Ko_report.csv")
 data <- data %>% na.omit()
@@ -35,6 +35,17 @@ Ko4<- subset(data , data$month == "04", select = post)
 Ko5<- subset(data , data$month == "05", select = post)
 Ko6<- subset(data , data$month == "06", select = post)
 
+# 儲存個月份的posts
+save_txt <- function(DATA, x){
+  filename = paste("~/GitHub/NTU-CSX-DataScience-group5/Final_Project/Wordcloud/FB/Ko_wordcloud/Ko",x , ".txt")
+  write.table(DATA, file = filename, sep = "", col.names=FALSE,row.names=FALSE,quote=FALSE)
+}
+save_txt(Ko1, 1)
+save_txt(Ko2, 2)
+save_txt(Ko3, 3)
+save_txt(Ko4, 4)
+save_txt(Ko5, 5)
+save_txt(Ko6, 6)
 # Di_text <- matrix(data = NA, nrow = 67,ncol = 5 )
 # Di_text <- cbind(data_1$bindtext, data_2$bindtext, data_3$bindtext, data_4$bindtext, data_5$bindtext)
 
