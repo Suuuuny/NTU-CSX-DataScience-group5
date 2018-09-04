@@ -1,24 +1,20 @@
 library(dplyr)
+library(magrittr)
 library(NLP)
 library(tidyr)
 library(ggplot2)
 
 # 丁守中 2017-12-17 - 2018-6-16
 Di_report <- read.csv("Di_report.csv")
+# 姚文智　
+Yao_report <- read.csv("Yao_report.csv")
+# 柯文哲
+Kao_report <- read.csv("Ko_report.csv")
 
-<<<<<<< HEAD
-share_count_cp <- cbind(month, share_count_cp)
-share_count_cp$month <- factor(share_count_cp$month, levels = c("一月上","一月下","二月上","二月下","三月上","三月下","四月上","四月下","五月上","五月下","六月上","六月下")) 
-Di_plot <- ggplot(share_count_cp, aes( month, share )) + 
-  geom_bar(stat = "identity", fill = "green3") +
-  ggtitle("丁守中發文分被享比例(每半月)") 
-  # theme(axis.text.x = element_text(angle = 90, vjust = 0.05))
-=======
 # 建立 function 進行資料清理
 DataClean <- function(DATA){
-  # please input data frame
->>>>>>> dfb7de260c6da84cc23a8a787e8cdc7c0bdd774d
-  
+  # please input data.frame and this function will output data.frame
+
   # Cut time variable 
   DATA <- DATA %>% separate(time, c("date","time"), "T")
   DATA <- DATA %>% separate(date, c("year","month","day"), "-") 
@@ -27,7 +23,7 @@ DataClean <- function(DATA){
   # 轉換為數值資料
   DATA$month <- DATA$month %>% as.numeric()
   DATA$day <- DATA$day %>% as.numeric()
-  # Exchage month and day to halfmonth
+  # Exchage month and day to halfmonth (以15天為間距)
   halfmonth <- c()
   for(i in DATA$day>15) {
     if (i==TRUE) {
@@ -48,8 +44,14 @@ DataClean <- function(DATA){
 }
 
 Di_report <- DataClean(Di_report)
+Yao_report <- DataClean(Yao_report)
+Kao_report <- DataClean(Kao_report)
+
+
+
 
 CountCP <- function(DATA,index){
+  # 功能：使用每半個月為間距，計算喜好數量／發文數量＝ＣＰ值
   # index = 7 : share, 8 : like 
   count = c()
   for (i in levels(DATA$halfmonth)[1:11]) {
@@ -73,6 +75,35 @@ Di_share_plot <- ggplot(Di_count_share_cp, aes(x=month, y=CP)) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.05))
 
 Di_like_plot <- ggplot(Di_count_like_cp, aes(x=month, y=CP)) + 
+  geom_bar(stat = "identity", fill = "green3") +
+  ggtitle("丁守中發文被按讚比例(每半月)") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.05))
+
+########################################################
+
+Yao_count_share_cp <- CountCP(Yao_report,7)
+Yao_count_like_cp <- CountCP(Yao_report,8)
+
+Yao_share_plot <- ggplot(Yao_count_share_cp, aes(x=month, y=CP)) + 
+  geom_bar(stat = "identity", fill = "green3") +
+  ggtitle("姚文智發文被分享比例(每半月)") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.05))
+
+Yao_like_plot <- ggplot(Yao_count_like_cp, aes(x=month, y=CP)) + 
+  geom_bar(stat = "identity", fill = "green3") +
+  ggtitle("姚文智發文被按讚比例(每半月)") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.05))
+##########################################################
+
+Kao_count_share_cp <- CountCP(Kao_report,7)
+Kao_count_like_cp <- CountCP(Kao_report,8)
+
+Kao_share_plot <- ggplot(Kao_count_share_cp, aes(x=month, y=CP)) + 
+  geom_bar(stat = "identity", fill = "green3") +
+  ggtitle("丁守中發文被分享比例(每半月)") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.05))
+
+Kao_like_plot <- ggplot(Kao_count_like_cp, aes(x=month, y=CP)) + 
   geom_bar(stat = "identity", fill = "green3") +
   ggtitle("丁守中發文被按讚比例(每半月)") +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.05))
