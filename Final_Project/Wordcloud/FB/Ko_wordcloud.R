@@ -37,7 +37,7 @@ Ko6<- subset(data , data$month == "06", select = post)
 
 # 儲存個月份的posts
 save_txt <- function(DATA, x){
-  filename = paste("~/GitHub/NTU-CSX-DataScience-group5/Final_Project/Wordcloud/FB/Ko_wordcloud/Ko",x , ".txt")
+  filename = paste("~/GitHub/NTU-CSX-DataScience-group5/Final_Project/Wordcloud/FB/Ko_",x , ".txt", sep = "")
   write.table(DATA, file = filename, sep = "", col.names=FALSE,row.names=FALSE,quote=FALSE)
 }
 save_txt(Ko1, 1)

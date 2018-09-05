@@ -40,7 +40,7 @@ Di6<- subset(data , data$month == "06", select = post)
 
 # 儲存個月份的posts
 save_txt <- function(DATA, x){
-  filename = paste("~/GitHub/NTU-CSX-DataScience-group5/Final_Project/Wordcloud/FB/Di_wordcloud/Di",x , ".txt")
+  filename = paste("~/GitHub/NTU-CSX-DataScience-group5/Final_Project/Wordcloud/FB/Di_",x, ".txt", sep = "")
   write.table(DATA, file = filename, sep = "", col.names=FALSE,row.names=FALSE,quote=FALSE)
 }
 save_txt(Di1, 1)

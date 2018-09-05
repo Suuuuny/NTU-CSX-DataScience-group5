@@ -12,8 +12,7 @@ library(RColorBrewer)
 library(wordcloud)
 library(memoise)
 
-getTermMatrix <- memoise(function(txt){
-  text <- readLines(sprintf("./%s.txt.gz", txt), encoding="UTF-8")
+getTermMatrix <- memoise(function(text){
   docs <- Corpus(VectorSource(text))
   toSpace <- content_transformer(function(x,pattern){
     return(gsub(pattern," ",x))
@@ -60,3 +59,5 @@ getTermMatrix <- memoise(function(txt){
   }
   freqFrame <- na.omit(freqFrame)
 })
+
+<-wordcloud()
