@@ -15,7 +15,7 @@ function(input, output, session) {
     isolate({
       withProgress({
         setProgress(message = "Processing corpus...")
-        getTermMatrix(input$wordcloud_candi)
+        getTermMatrix(input$wordcloud_FB_candi)
       })
     })
   })
@@ -25,8 +25,12 @@ function(input, output, session) {
   
   output$plot <- renderPlot({
     v <- terms()
-    wordcloud_rep(names(v), v, scale=c(4,0.5),
-                  min.freq = input$freq, max.words=input$max,
-                  colors=brewer.pal(8, "Dark2"))
+    wordcloud_rep(v$Var1,v$Freq,
+              min.freq=15,
+              random.order=TRUE,random.color=TRUE, 
+              rot.per=.1, colors=rainbow(length(row.names(freqFrame))),
+              ordered.colors=FALSE,use.r.layout=FALSE,
+              fixed.asp=TRUE)
+    
   })
 }
