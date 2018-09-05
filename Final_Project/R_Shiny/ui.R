@@ -4,6 +4,30 @@ library(shiny)
 shinyUI(navbarPage("選戰懶人包",
 
                    navbarMenu("FaceBook",
+                              
+                              tabPanel("發文回響量",sidebarLayout(
+                                sidebarPanel(
+                                  selectInput("Candi222", "北市候選人",
+                                              choices = list("柯文哲"="Ko", "丁守中"="Di", "姚文智"="Yao"))
+                                  
+                                  
+                                  
+                                  
+                                )
+                                
+                              
+                                ,mainPanel(
+                                  
+                                  plotOutput("TestPlot")
+                                  
+                                )
+                                
+                                
+                                
+                              )),
+                              
+                              
+                              
                               tabPanel("趨勢圖",sidebarLayout(
                                 
                                 sidebarPanel(
@@ -24,11 +48,7 @@ shinyUI(navbarPage("選戰懶人包",
                                 
                               )       
                                        
-                                       
-                                       
-                                       
-                                       
-                                       
+                                    
                                        
                                        ),
                               tabPanel("盒狀圖",sidebarLayout(
