@@ -8,7 +8,7 @@ fluidPage(
       selectInput("wordcloud_FB_candi", "請選擇候選人",
                   choices = list("柯文哲"="Ko", "丁守中"="Di", "姚文智"="Yao")),
       selectInput("wordcloud_FB_month", "請選擇月份",
-                  choices = list("柯文哲"="Ko", "丁守中"="Di", "姚文智"="Yao")),
+                  choices = list("一月"="1", "二月"="2", "三月"="3")),
       actionButton("update", "Change"),
       hr(),
       sliderInput("freq",

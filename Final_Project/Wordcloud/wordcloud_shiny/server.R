@@ -15,7 +15,7 @@ function(input, output, session) {
     isolate({
       withProgress({
         setProgress(message = "Processing corpus...")
-        getTermMatrix(input$wordcloud_FB_candi)
+        getTermMatrix(input$wordcloud_FB_candi,input$wordcloud_FB_month)
       })
     })
   })

@@ -18,12 +18,12 @@ library(wordcloud)
 
 
 # Using "memoise" to automatically cache the results
-getTermMatrix <- memoise(function(Candi,month) {
+getTermMatrix <- memoise(function(Candi,Month) {
   # Careful not to let just any name slip in here; a
   par(family=("Heiti TC Light"))
-  text <- read.csv("FaceBookAPI-Taipei_new.csv",encoding = "Big5")
-  text <- text[text$name=="Ko",]
-
+  text <- read.csv("FaceBookAPI-Taipei_new_edit.csv",encoding = "Big5")
+  text <- text[text$name==Candi,]
+  text <- text[text$month==Month,]
   
   
   myCorpus = Corpus(VectorSource(text$post))
