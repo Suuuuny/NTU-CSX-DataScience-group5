@@ -22,12 +22,13 @@ function(input, output, session) {
   
   # Make the wordcloud drawing predictable during a session
   wordcloud_rep <- repeatable(wordcloud)
-  
+  par(family=("Heiti TC Light"))
   output$plot <- renderPlot({
     v <- terms()
     par(family=("Heiti TC Light"))
     wordcloud_rep(v$Var1,v$Freq,
-              min.freq=15,
+              min.freq=input$freq,
+              max.words=input$max,
               random.order=TRUE,random.color=TRUE, 
               rot.per=.1, colors=rainbow(length(row.names(freqFrame))),
               ordered.colors=FALSE,use.r.layout=FALSE,
