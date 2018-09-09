@@ -63,8 +63,8 @@ getTermMatrix <- memoise(function(Candi,Month) {
     }
   }
   freqFrame <- na.omit(freqFrame)
-  return(freqFrame)
+ 
   
-  
+  assign("freqFrame", freqFrame, envir = .GlobalEnv) 
 })
 

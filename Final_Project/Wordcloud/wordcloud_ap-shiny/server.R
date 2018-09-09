@@ -17,6 +17,7 @@ function(input, output, session) {
   
   output$plot <- renderPlot({
     v <- terms()
+    par(family=("Heiti TC Light"))
     wordcloud_rep(v$Var1,v$Freq,
                   min.freq=15,
                   random.order=TRUE,random.color=TRUE, 
