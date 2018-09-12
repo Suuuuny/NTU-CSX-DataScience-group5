@@ -47,7 +47,6 @@ Di_report <- DataClean(Di_report)
 Yao_report <- DataClean(Yao_report)
 Kao_report <- DataClean(Kao_report)
 
-summary(Di_report$halfmonth)
 
 ## 畫圖 丁守中 柯文哲 姚文智 每半個月發文量
 Di = summary(Di_report$halfmonth) %>% as.numeric()
@@ -55,12 +54,22 @@ Yao = summary(Yao_report$halfmonth) %>% as.numeric()
 Ko = summary(Kao_report$halfmonth) %>% as.numeric()
 
 report_sum = data.frame()
-report_sum = rbind(Di[1:11],Yao[1:11],Ko)
-row.names(report_sum) <- c("Di","Yao","Ko")
-colnames(report_sum) <- c("一月上","一月下","二月上","二月下","三月上","三月下","四月上","四月下","五月上","五月下","六月上")
-report_sum <- report_sum %>% t()
 
-ggplot(report_sum)
+halfmonth = c("一月上","一月下","二月上","二月下","三月上","三月下","四月上","四月下","五月上","五月下","六月上")
+report_Di = cbind(Di[1:11],rep("Di",time(11)))
+report_Ko = cbind(Ko[1:11],rep("Ko",time(11)))
+report_Yao = cbind(Yao[1:11],rep("Yao",time(11)))
+report_sum <- rbind(report_Di,report_Ko,report_Yao) %>% as.data.frame()
+report_sum <- report_sum %>% cbind(.,c(halfmonth,halfmonth,halfmonth))
+
+
+colnames(report_sum) <- c("post","name","halfmonth")
+report_sum$post <- as.numeric(as.character(report_sum$post))
+report_sum$halfmonth <- report_sum$halfmonth %>% factor(.,c("一月上","一月下","二月上","二月下","三月上","三月下","四月上","四月下","五月上","五月下","六月上"))
+
+
+ggplot(report_sum, aes(x = halfmonth, y = post, colour=name,group=name))+ geom_point(size = 4)+ geom_line() +  scale_color_manual(values=c("blue", "black", "green"))
+       
 
 CountCP <- function(DATA,index){
   # 功能：使用每半個月為間距，計算喜好數量／發文數量＝ＣＰ值
