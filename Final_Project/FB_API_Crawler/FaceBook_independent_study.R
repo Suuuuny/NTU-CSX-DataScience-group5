@@ -56,9 +56,9 @@ Ko = summary(Kao_report$halfmonth) %>% as.numeric()
 report_sum = data.frame()
 
 halfmonth = c("一月上","一月下","二月上","二月下","三月上","三月下","四月上","四月下","五月上","五月下","六月上")
-report_Di = cbind(Di[1:11],rep("Di",time(11)))
-report_Ko = cbind(Ko[1:11],rep("Ko",time(11)))
-report_Yao = cbind(Yao[1:11],rep("Yao",time(11)))
+report_Di = cbind(Di[1:11],rep("丁守中",time(11)))
+report_Ko = cbind(Ko[1:11],rep("柯文哲",time(11)))
+report_Yao = cbind(Yao[1:11],rep("姚文智",time(11)))
 report_sum <- rbind(report_Di,report_Ko,report_Yao) %>% as.data.frame()
 report_sum <- report_sum %>% cbind(.,c(halfmonth,halfmonth,halfmonth))
 
@@ -68,8 +68,12 @@ report_sum$post <- as.numeric(as.character(report_sum$post))
 report_sum$halfmonth <- report_sum$halfmonth %>% factor(.,c("一月上","一月下","二月上","二月下","三月上","三月下","四月上","四月下","五月上","五月下","六月上"))
 
 
-ggplot(report_sum, aes(x = halfmonth, y = post, colour=name,group=name))+ geom_point(size = 4)+ geom_line() +  scale_color_manual(values=c("blue", "black", "green"))
-       
+ggplot(report_sum, aes(x = halfmonth, y = post, colour=name,group=name))+ geom_point(size = 4)+ geom_line() +  scale_color_manual(values=c("blue", "green", "black"))+xlab("time") +scale_fill_discrete(labels=c("丁守中","V","C"))
+
+
+
+
+
 
 CountCP <- function(DATA,index){
   # 功能：使用每半個月為間距，計算喜好數量／發文數量＝ＣＰ值
