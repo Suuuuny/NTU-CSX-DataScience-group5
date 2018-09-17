@@ -1,20 +1,27 @@
 library(magrittr)
 # load data
-yao <- read.csv("Yao_CTnews.csv")
-ko <- read.csv("Ko_CTnews.csv")
-di <- read.csv("Ding_CTnews.csv")
+Yao <- read.csv("Yao_CTnews.csv")
+Ko <- read.csv("Ko_CTnews.csv")
+Di <- read.csv("Ding_CTnews.csv")
 
 # assign new id to 3 candi
 new_id_var <- function(Data){
   new <- rep(deparse(substitute(Data)),nrow(Data))
   Data <- cbind(Data, new)
 }
-ko<-new_id_var(ko)
-yao<-new_id_var(yao)
-di<-new_id_var(di)
+sub_media <- function(x){
+  gsub("Apple","CT",x)
+}
+Ko<-new_id_var(Ko)
+Yao<-new_id_var(Yao)
+Di<-new_id_var(Di)
 
 # bind all data together 
-all <- rbind(di, ko, yao)
+all <- rbind(Di, Ko, Yao)
+# deal wrong media name
+media <- rep('ct',nrow(all))
+all <- cbind(all ,media)
+all <- subset(all, select = -c(Media) )
 # delete Na data
 all <- all %>% na.omit()
 # remove duplicated data

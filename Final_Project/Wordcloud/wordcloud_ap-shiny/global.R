@@ -4,8 +4,6 @@ library(RColorBrewer)
 library(wordcloud)
 library(memoise)
 library(tibble)
-
-
 library(data.table)
 library(NLP)
 library(tm)
@@ -37,7 +35,7 @@ getTermMatrix <- memoise(function(Candi,Month) {
   
   
   clean_doc <- function(docs){
-    clean_words <- c("[A-Za-z0-9]","、","《","『","』","【","】","／","，","。","！","「","（","」","）","\n","；",">","<","＜","＞")
+    clean_words <- c("[A-Za-z0-9]","、","《","『","』","【","】","／","，","。","！","「","（","」","）","\n","；",">","<","＜","＞","分享","記者","攝影","提及","表示","報導","我們","他們","的","也","都","就","與","但","是","在","和","及","為","或","且","有","含","為達最佳瀏覽效果，建議使用 Chrome、Firefox 或 Internet Explorer 10","新聞送上來！快加入自由電子報APP、LINE好友  2018年6月13日‧星期三‧戊戌年四月卅 注目新聞 1 中國卡車罷工延燒 司機高喊「打倒共產黨」！ 2 新版身分證票選出爐 設計師魯少綸奪首獎！ 3 洋腸又來！夜店外帶18歲妹 網站取名「台女很容易」... 4 侯友宜妻1塊土地99個門牌 蘇貞昌：太荒唐 5 連俞涵超正弟媳曝光…根本巨乳林志玲,","以上版本的瀏覽器。 爆")
     for(i in 1:length(clean_words)){
       docs <- tm_map(docs,toSpace, clean_words[i])
     }

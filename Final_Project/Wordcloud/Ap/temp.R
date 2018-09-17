@@ -1,20 +1,20 @@
 library(magrittr)
 # load data
-yao <- read.csv("Yao_Appnews.csv")
-ko <- read.csv("Ko_Appnews.csv")
-di <- read.csv("Ding_Appnews.csv")
+Yao <- read.csv("Yao_Appnews.csv")
+Ko <- read.csv("Ko_Appnews.csv")
+Di <- read.csv("Ding_Appnews.csv")
 
 # assign new id to 3 candi
 new_id_var <- function(Data){
   new <- rep(deparse(substitute(Data)),nrow(Data))
   Data <- cbind(Data, new)
 }
-ko<-new_id_var(ko)
-yao<-new_id_var(yao)
-di<-new_id_var(di)
+Ko<-new_id_var(Ko)
+Yao<-new_id_var(Yao)
+Di<-new_id_var(Di)
 
 # bind all data together 
-all <- rbind(di, ko, yao)
+all <- rbind(Di, Ko, Yao)
 # delete Na data
 all <- all %>% na.omit()
 # remove duplicated data
