@@ -21,65 +21,6 @@ FacebookID = "YaoTurningTaipei"
 ## 注意 : limit請設定25的倍數
 limit <- 300
 
-##################################################################
-## 取得每篇文章留言內容 ===== 停止開發<原因:資料量太大>
-
-# Crawl meassage data from facebookAPI(every post)
-
-url_1 = "https://graph.facebook.com/v3.0/"
-url_2 = "?fields=posts%7Bcomments.limit(20)%7D&access_token="
-url = paste0(url_1,FacebookID,url_2,token)
-response = GET(url)
-message  = content(response)
-
-# Get message from post <List>
-message <- message$posts$data
-  
-# find if there is empty post(no messafe return 0)
-ismessage = sapply(message,function(x){
-  if(length(x)==2) return (1)
-  else return (0)
-})
-
-ismessage
-
-# Get post idx(have message)
-ismessageidx = NULL
-for(i in c(1:length(ismessage))){
-  if(ismessage[i]==1)
-    ismessageidx <- c(ismessageidx,i)
-}
-
-ismessageidx
-
-## create dataframe with same col number
-## there is a from in posts$posts$data[[2]]$comments$data[[1]]$from
-
-
-findMesNum <- function(i){
-  message[[i]]$comments$data %>% length %>% return()
-}
-findMes2Num <- function(x,y){
-  message[[x]]$comments$data[[y]] %>% length %>% return()
-}
-
-for(i in ismessageidx){
-  for(j in c(1:findMesNum(i))){
-    if(findMes2Num(i,j)==4){
-      message[[i]]$comments$data[[j]]$from <- NULL
-    }
-  }
-}
-
-Output <- data.frame()
-for(i in ismessageidx){
-  data <- message[[i]]$comments$data %>% do.call(rbind,.)%>% data.frame()
-  data <- cbind(i,data)
-  Output <- rbind(Output,data)  
-}
-
-
-
 
 ##################################################################
 ###### Crawl posts data <posts內容、分享、按讚> ##################
@@ -236,33 +177,14 @@ Mood_data <- Getmood(FacebookID,limit,token)
  
 ###################################################################
 
-## 建立粉專套件 Search_FB_post <function> >>> 停止開發 >> 好像只有柯文哲可以用
-# 引入參數 FacebookID,Token,limit
-# 參數說明 : FacebookID = 要搜尋粉專之ID
-#            limit = 要搜尋的post個數
-#            token = 請於FacebookAPI取得token
-# 執行此function前請先建立 GetPost, GetShare, GetMood三個function
+#### 結果 ####
+# 丁守中 爬文結果
+ Di_report <- read.csv("Di_report.csv")
+# 姚文智 爬文結果
+ Yao_report <- read.csv("Yao_report.csv")
+# 柯文哲 爬文結果
+ Kao_report <- read.csv("Ko_report.csv")
 
-Search_FB_post <- function(FacebookID,limit,token){
-  # 處理 limit非25的倍數問題 temp 儲存真實原始的limit數
-  temp_limit <- limit
-  if(limit%%25>0){
-    limit <- (ceiling(limit/25))*25
-  }
-  
-  # 使用 已建立之 function 搜尋
-  Post_data <- GetPost(FacebookID,limit,token)
-  Share_data <- GetShare(FacebookID,limit,token)
-  Mood_data <- Getmood(FacebookID,limit,token)
-  Report <- cbind(Post_data,Share_data,Mood_data)
-  colnames(Report) <- c("time","post","share","like","love","haha","sad","wow","angry")
-  return(Report[1:temp_limit,])
-}
-
-
-FacebookID = "DoctorKoWJ"
-token = "EAACEdEose0cBAEIj72iMZAAPqk1uHjhQ0ptLBMRRye1i4mZBdArFRmOlNqoJZAxy8Of9sjmVpx26utPLl0tJGHCEOGsMJijCjqG0oeo9o76drtCy8Cm9FJ6ZA6KbsOmjNXvxBphtMlRxbGtpHOidFCPWycpnOqTFBzbPAepnQ2HUA8Pm9VsbGdlGWsWacvIZD"
-limit = 30
-
-Ko_Report <- Search_FB_post(FacebookID,limit,token)
-
+#####################################################################
+ 
+## 後續資料清理 在Facebook_independent_study.R

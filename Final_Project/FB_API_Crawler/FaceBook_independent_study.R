@@ -9,13 +9,18 @@ Di_report <- read.csv("Di_report.csv")
 # 姚文智　
 Yao_report <- read.csv("Yao_report.csv")
 # 柯文哲
-Kao_report <- read.csv("Ko_report.csv")
+Ko_report <- read.csv("Ko_report.csv")
 
 # 建立 function 進行資料清理
 DataClean <- function(DATA){
   # please input data.frame and this function will output data.frame
 
   # Cut time variable 
+  time2 <- DATA$time
+  DATA <- cbind(DATA,time2)
+
+
+  
   DATA <- DATA %>% separate(time, c("date","time"), "T")
   DATA <- DATA %>% separate(date, c("year","month","day"), "-") 
   # Drop 2017 data
@@ -45,13 +50,32 @@ DataClean <- function(DATA){
 
 Di_report <- DataClean(Di_report)
 Yao_report <- DataClean(Yao_report)
-Kao_report <- DataClean(Kao_report)
+Ko_report <- DataClean(Ko_report)
+
+############## 整理成 Final table
+name <- c("x","year","month","day","time","post","share","like","love","haha","sad","wow","angry","time2","halfmonth","name","Candidate")
+Di_report <- cbind(Di_report,rep("Di",times=265),rep("丁守中",times=265))
+colnames(Di_report) <- name
+Yao_report <- cbind(Yao_report,rep("Yao",times=243),rep("姚文智",times=243))
+colnames(Yao_report) <- name
+Ko_report <- cbind(Ko_report,rep("Ko",times=138),rep("柯文哲",times=138))
+colnames(Ko_report) <- name
+
+Facebook_report <- rbind(Di_report,Yao_report,Ko_report)
+
+
+############### Facebook 爬文結果!!!!!!!
+write.csv(Facebook_report,"FaceBook_report.csv")
+
+
+
+
 
 
 ## 畫圖 丁守中 柯文哲 姚文智 每半個月發文量
 Di = summary(Di_report$halfmonth) %>% as.numeric()
 Yao = summary(Yao_report$halfmonth) %>% as.numeric()
-Ko = summary(Kao_report$halfmonth) %>% as.numeric()
+Ko = summary(Ko_report$halfmonth) %>% as.numeric()
 
 report_sum = data.frame()
 
@@ -120,15 +144,15 @@ Yao_like_plot <- ggplot(Yao_count_like_cp, aes(x=month, y=CP)) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.05))
 ##########################################################
 
-Kao_count_share_cp <- CountCP(Kao_report,7)
-Kao_count_like_cp <- CountCP(Kao_report,8)
+Ko_count_share_cp <- CountCP(Ko_report,7)
+Ko_count_like_cp <- CountCP(Ko_report,8)
 
-Kao_share_plot <- ggplot(Kao_count_share_cp, aes(x=month, y=CP)) + 
+Ko_share_plot <- ggplot(Ko_count_share_cp, aes(x=month, y=CP)) + 
   geom_bar(stat = "identity", fill = "green3") +
   ggtitle("丁守中發文被分享比例(每半月)") +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.05))
 
-Kao_like_plot <- ggplot(Kao_count_like_cp, aes(x=month, y=CP)) + 
+Ko_like_plot <- ggplot(Ko_count_like_cp, aes(x=month, y=CP)) + 
   geom_bar(stat = "identity", fill = "green3") +
   ggtitle("丁守中發文被按讚比例(每半月)") +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.05))

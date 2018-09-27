@@ -1,6 +1,8 @@
 library(jiebaRD)
 library(jiebaR)
 
+
+## 引用程式碼 : http://blog.sina.com.cn/s/blog_c368a6290102y4bg.html
 #### 使用情感字典 <NTUSD> ####
 pos<-read.csv('NTUSD_positive_unicode.csv',header=F,stringsAsFactors=FALSE,encoding = "unicode")
 weight <- rep(1, length(pos[,1])) #正面情感詞語權重為1
@@ -23,9 +25,8 @@ new_user_word(w1,user)
 
 #### 文字清理 ####
 
-# 使用測試資料
 # 要算情緒的檔案從這邊丟入
-Data <- read.csv("FB_result/Di_report.csv")
+Data <- read.csv("FaceBook_report.csv")
 
 # 套件引用
 library(NLP)
@@ -59,8 +60,12 @@ jieba_tokenizer = function(d){
 
 seg = lapply(docs, jieba_tokenizer)
 
-# 計算情感分數
+  # 計算情感分數
 sentiment_point <- sapply(seg,function(d){
+  if(length(d)==0){
+    return(NA)
+  }
+  print(length(d))
   res <- d
   temp<-data.frame()
   temp[c(1:length(res)),1]<-rep('1.text' ,length(res)) #id
@@ -80,5 +85,5 @@ sentiment_point[sentiment_point %>% is.na] = 0.5
 Data <- cbind(Data,sentiment_point)
 
 # 此時可以輸出Data這個結果
-
+write.csv(Data,"FaceBookAPI-Taipei.csv")
 
