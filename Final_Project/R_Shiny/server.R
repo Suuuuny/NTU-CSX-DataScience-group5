@@ -7,6 +7,7 @@ shinyServer(function(input, output) {
   
   News <- read.csv("News_sentiment.csv",fileEncoding = "Big5")
   FB_Taipei <- read.csv("FaceBookAPI-Taipei.csv",fileEncoding = "Big5")
+  News2 <- read.csv("News_3candi_4news.csv")
   
   output$TrendPlot <- renderPlot({
     
@@ -191,6 +192,12 @@ shinyServer(function(input, output) {
       geom_bar(stat = "identity", fill = "black") +
       ggtitle("發文被分享比例CP(每半月)") +
       theme(axis.text.x = element_text(angle = 90, vjust = 0.05))+theme(text = element_text(family = "Heiti TC Light"))
+    
+    
+  })
+  
+  output$Newsreport <- renderPlot({
+    
     
     
   })

@@ -147,6 +147,9 @@ shinyUI(navbarPage("選戰懶人包",
                               ),
     
                   navbarMenu("四大報",
+                              tabPanel("四大報文章量分析"), 
+                             
+                             
                               tabPanel("情緒分析<以候選人分類>",
                                        sidebarLayout(
                                          sidebarPanel(
@@ -232,9 +235,9 @@ shinyUI(navbarPage("選戰懶人包",
                                               plotOutput("newsLDA",height = 600, width = 1200)
                                   
                                 )
-                              ))),
+                              )))
                   
-                  tabPanel("討論")
+                  
 
   )
 )
