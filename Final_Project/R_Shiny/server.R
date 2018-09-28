@@ -9,19 +9,17 @@ shinyServer(function(input, output) {
   FB_Taipei <- read.csv("FaceBookAPI-Taipei.csv",fileEncoding = "Big5")
   
   output$TrendPlot <- renderPlot({
+    
     if(input$Candi==4){
       mood = input$mood %>% as.character()
-      par(family=("Heiti TC Light"))
-      ggplot(data=FB_Taipei, aes(x=time2%>% as.Date(), y=eval(parse(text = input$mood %>% as.character())), color=Candidate))+geom_point(size=3)+xlab("time")+ylab(mood)+scale_color_manual(values=c("blue", "green", "black"))
+      ggplot(data=FB_Taipei, aes(x=time2%>% as.Date(), y=eval(parse(text = input$mood %>% as.character())), color=Candidate))+geom_point(size=3)+xlab("time")+ylab(mood)+scale_color_manual(values=c("blue", "green", "black"))+theme(text = element_text(family = "Heiti TC Light"))
     }else{
       names = input$Candi %>% as.character()
       mood = input$mood %>% as.character()
       if(input$line==TRUE){
-        par(family=("Heiti TC Light"))
-        qplot(time2 %>% as.Date(),eval(parse(text = input$mood %>% as.character())),data=FB_Taipei[FB_Taipei$Candidate==names,],xlab = "date",ylab=mood,geom = c("point", "smooth"))
+        qplot(time2 %>% as.Date(),eval(parse(text = input$mood %>% as.character())),data=FB_Taipei[FB_Taipei$Candidate==names,],xlab = "date",ylab=mood,geom = c("point", "smooth"))+theme(text = element_text(family = "Heiti TC Light"))
       }else{
-        par(family=("Heiti TC Light"))
-        qplot(time2 %>% as.Date(),eval(parse(text = input$mood %>% as.character())),data=FB_Taipei[FB_Taipei$Candidate==names,],xlab = "date",ylab=mood)
+        qplot(time2 %>% as.Date(),eval(parse(text = input$mood %>% as.character())),data=FB_Taipei[FB_Taipei$Candidate==names,],xlab = "date",ylab=mood)+theme(text = element_text(family = "Heiti TC Light"))
       }
     }
     
@@ -30,8 +28,8 @@ shinyServer(function(input, output) {
   output$BoxPlot <- renderPlot({
     
     mood = input$mood2 %>% as.character()
-    P1 <- ggplot(FB_Taipei, aes(x=name, y=eval(parse(text = input$mood2 %>% as.character())),color = Candidate)) + 
-      scale_color_manual(values=c("blue", "green", "red"))+ylab(mood)
+    P1 <- ggplot(FB_Taipei, aes(x=Candidate, y=eval(parse(text = input$mood2 %>% as.character())),color = Candidate)) + 
+      scale_color_manual(values=c("blue", "green", "black"))+ylab(mood)+theme(text = element_text(family = "Heiti TC Light"))
     if(input$outlier == 0){
       P2 = P1 +  geom_boxplot()
       P2
@@ -80,35 +78,35 @@ shinyServer(function(input, output) {
       df = FB_Taipei[FB_Taipei$name=="Yao",]
     }
     if(input$mood3=="like"){
-      df2 <- df[,c(3,4,6)]
+      df2 <- df[,c(16,8,10)]
       df2[df2$like %>% order(.,decreasing = input$decrease), ] %>% head(.,n = input$shows)
       
     }else if (input$mood3=="share"){
-      df2 <- df[,c(3,4,5)]
+      df2 <- df[,c(16,8,9)]
       df2[df2$share %>% order(.,decreasing = input$decrease), ] %>% head(.,n = input$shows)
       
     }else if (input$mood3=="angry"){
-      df2 <- df[,c(3,4,11)]
+      df2 <- df[,c(16,8,15)]
       df2[df2$angry %>% order(.,decreasing = input$decrease), ] %>% head(.,n = input$shows)
       
     }else if (input$mood3=="sad"){
-      df2 <- df[,c(3,4,9)]
+      df2 <- df[,c(16,8,13)]
       df2[df2$sad %>% order(.,decreasing = input$decrease), ] %>% head(.,n = input$shows)
       
     }else if (input$mood3=="haha"){
-      df2 <- df[,c(3,4,8)]
+      df2 <- df[,c(16,8,12)]
       df2[df2$haha %>% order(.,decreasing = input$decrease), ] %>% head(.,n = input$shows)
       
     }else if (input$mood3=="love"){
-      df2 <- df[,c(3,4,7)]
+      df2 <- df[,c(16,8,11)]
       df2[df2$love %>% order(.,decreasing = input$decrease), ] %>% head(.,n = input$shows)
       
     }else if (input$mood3=="wow"){
-      df2 <- df[,c(3,4,10)]
+      df2 <- df[,c(16,8,14)]
       df2[df2$wow %>% order(.,decreasing = input$decrease), ] %>% head(.,n = input$shows)
       
     }else if (input$mood3=="sentiment"){
-      df2 <- df[,c(3,4,12)]
+      df2 <- df[,c(16,8,20)]
       df2[df2$sentiment %>% order(.,decreasing = input$decrease), ] %>% head(.,n = input$shows)
       
     }
@@ -132,14 +130,67 @@ shinyServer(function(input, output) {
 
   })
   
-  output$TestPlot <- renderPlot({
+  output$FB_count <- renderPlot({
     
-    qplot(candidate,sentiment,data=News)
+    ## 畫圖 丁守中 柯文哲 姚文智 每半個月發文量
+    Di = FB_Taipei[FB_Taipei$name=="Di",]$halfmonth %>% as.character() %>% as.factor() %>% summary() %>% as.numeric()
+    Ko = FB_Taipei[FB_Taipei$name=="Ko",]$halfmonth %>% as.character() %>% as.factor() %>% summary() %>% as.numeric()
+    Yao = FB_Taipei[FB_Taipei$name=="Yao",]$halfmonth %>% as.character() %>% as.factor() %>% summary() %>% as.numeric()
+    report_sum = data.frame()
+    
+    halfmonth = c("一月上","一月下","二月上","二月下","三月上","三月下","四月上","四月下","五月上","五月下","六月上")
+    report_Di = cbind(Di[1:11],rep("丁守中",time(11)))
+    report_Ko = cbind(Ko[1:11],rep("柯文哲",time(11)))
+    report_Yao = cbind(Yao[1:11],rep("姚文智",time(11)))
+    report_sum <- rbind(report_Di,report_Ko,report_Yao) %>% as.data.frame()
+    report_sum <- report_sum %>% cbind(.,c(halfmonth,halfmonth,halfmonth))
+    
+    
+    colnames(report_sum) <- c("post","name","halfmonth")
+    report_sum$post <- as.numeric(as.character(report_sum$post))
+    report_sum$halfmonth <- report_sum$halfmonth %>% factor(.,c("一月上","一月下","二月上","二月下","三月上","三月下","四月上","四月下","五月上","五月下","六月上"))
+    
+    
+    ggplot(report_sum, aes(x = halfmonth, y = post, colour=name,group=name))+ geom_point(size = 4)+ geom_line() +  scale_color_manual(values=c("blue", "green", "black"))+xlab("time") +scale_fill_discrete(labels=c("丁守中","V","C"))+theme(text = element_text(family = "Heiti TC Light"))
+    
+   
     
   })
+  
   output$TestPlot2 <- renderPlot({
     
-    qplot(name,sentiment,data=News)
+    CountCP <- function(DATA,index){
+      # 功能：使用每半個月為間距，計算喜好數量／發文數量＝ＣＰ值
+      # index = 9 : share, 10 : like 
+      count = c()
+      DATA$halfmonth <- DATA$halfmonth %>% as.character() %>% as.factor()
+      for (i in levels(DATA$halfmonth)[1:11]) {
+        count <- c(count,(DATA[DATA$halfmonth==i,index] %>% sum()))
+      }
+      count_cp <- count / (summary(DATA$halfmonth)[1:11] %>% as.numeric())
+      month <- c("一月上","一月下","二月上","二月下","三月上","三月下","四月上","四月下","五月上","五月下","六月上") 
+      count_cp <- count_cp %>% as.data.frame()
+      count_cp <- cbind(month,count_cp)
+      count_cp$month <- count_cp$month %>% factor(.,levels = c("一月上","一月下","二月上","二月下","三月上","三月下","四月上","四月下","五月上","五月下","六月上"))
+      colnames(count_cp) <- c("month","CP")
+      return(count_cp)
+    }
+    
+    index = 0
+    if(input$moodCP=="share"){
+      index = 9
+    }else{
+      index = 10
+    }
+    
+    
+    count_cp <- CountCP(FB_Taipei[FB_Taipei$name==input$CandiCP,],index)
+   
+     ggplot(count_cp, aes(x=month, y=CP)) + 
+      geom_bar(stat = "identity", fill = "black") +
+      ggtitle("發文被分享比例CP(每半月)") +
+      theme(axis.text.x = element_text(angle = 90, vjust = 0.05))+theme(text = element_text(family = "Heiti TC Light"))
+    
     
   })
   

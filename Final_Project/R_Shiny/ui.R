@@ -5,28 +5,34 @@ shinyUI(navbarPage("選戰懶人包",
 
                    navbarMenu("FaceBook",
                               
-                              tabPanel("發文回響量",sidebarLayout(
-                                sidebarPanel(
-                                  selectInput("Candi222", "北市候選人",
-                                              choices = list("柯文哲"="Ko", "丁守中"="Di", "姚文智"="Yao"))
-                                  
-                                  
-                                  
+                              tabPanel("發文量分佈圖",
+                                
+                                mainPanel(
+                             
+                                  plotOutput("FB_count")
                                   
                                 )
-                                
                               
-                                ,mainPanel(
-                                  
-                                  plotOutput("TestPlot")
-                                  
-                                )
-                                
-                                
-                                
-                              )),
+                              ),
                               
-                              
+                              tabPanel("發文CP值",sidebarLayout(
+                                sidebarPanel(selectInput("CandiCP", "北市候選人",
+                                                         choices = list("柯文哲"="Ko", "丁守中"="Di", "姚文智"="Yao")),
+                                             radioButtons("moodCP", label = h4("臉書表情"),
+                                                          choices = c("like","share"), 
+                                                          selected = "like")
+                                             
+                                             
+                                             )
+                                
+                                ,mainPanel(plotOutput("TestPlot2"))
+                                
+                                
+                                
+                              )
+                                       
+                                    
+                                       ),
                               
                               tabPanel("趨勢圖",sidebarLayout(
                                 
@@ -42,6 +48,7 @@ shinyUI(navbarPage("選戰懶人包",
                                   
                                 ), mainPanel(
                                   
+                                
                                   plotOutput("TrendPlot")
                                   
                                 )
