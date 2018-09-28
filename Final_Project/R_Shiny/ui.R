@@ -25,7 +25,7 @@ shinyUI(navbarPage("選戰懶人包",
                                              
                                              )
                                 
-                                ,mainPanel(plotOutput("TestPlot2"))
+                                ,mainPanel(plotOutput("CPplot"))
                                 
                                 
                                 

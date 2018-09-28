@@ -157,7 +157,7 @@ shinyServer(function(input, output) {
     
   })
   
-  output$TestPlot2 <- renderPlot({
+  output$CPplot <- renderPlot({
     
     CountCP <- function(DATA,index){
       # 功能：使用每半個月為間距，計算喜好數量／發文數量＝ＣＰ值
