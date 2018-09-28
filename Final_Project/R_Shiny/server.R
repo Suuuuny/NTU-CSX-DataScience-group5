@@ -114,6 +114,7 @@ shinyServer(function(input, output) {
     
     
   })
+  
   output$postLDA <- renderPlot({
 
     if(input$PostCandi=="柯文哲"){
@@ -261,7 +262,6 @@ shinyServer(function(input, output) {
     }
     
   })
-  
 
   output$CloudPlot <- renderPlot({
     # 柯文哲
