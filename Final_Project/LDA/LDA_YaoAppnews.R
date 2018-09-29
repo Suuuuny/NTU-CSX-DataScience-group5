@@ -3,6 +3,7 @@
 rm(list = ls())
 
 #載入套件
+library(jiebaRD)
 library(jiebaR)
 library(dplyr)
 library(topicmodels)

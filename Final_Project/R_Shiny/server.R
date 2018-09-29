@@ -13,14 +13,14 @@ shinyServer(function(input, output) {
     
     if(input$Candi==4){
       mood = input$mood %>% as.character()
-      ggplot(data=FB_Taipei, aes(x=time2%>% as.Date(), y=eval(parse(text = input$mood %>% as.character())), color=Candidate))+geom_point(size=3)+xlab("time")+ylab(mood)+scale_color_manual(values=c("blue", "green", "black"))+theme(text = element_text(family = "Heiti TC Light"))
+      ggplot(data=FB_Taipei, aes(x=date%>% as.Date(), y=eval(parse(text = input$mood %>% as.character())), color=Candidate))+geom_point(size=3)+xlab("time")+ylab(mood)+scale_color_manual(values=c("blue", "green", "black"))+theme(text = element_text(family = "Heiti TC Light"))
     }else{
       names = input$Candi %>% as.character()
       mood = input$mood %>% as.character()
       if(input$line==TRUE){
-        qplot(time2 %>% as.Date(),eval(parse(text = input$mood %>% as.character())),data=FB_Taipei[FB_Taipei$Candidate==names,],xlab = "date",ylab=mood,geom = c("point", "smooth"))+theme(text = element_text(family = "Heiti TC Light"))
+        qplot(date %>% as.Date(),eval(parse(text = input$mood %>% as.character())),data=FB_Taipei[FB_Taipei$Candidate==names,],xlab = "date",ylab=mood,geom = c("point", "smooth"))+theme(text = element_text(family = "Heiti TC Light"))
       }else{
-        qplot(time2 %>% as.Date(),eval(parse(text = input$mood %>% as.character())),data=FB_Taipei[FB_Taipei$Candidate==names,],xlab = "date",ylab=mood)+theme(text = element_text(family = "Heiti TC Light"))
+        qplot(date %>% as.Date(),eval(parse(text = input$mood %>% as.character())),data=FB_Taipei[FB_Taipei$Candidate==names,],xlab = "date",ylab=mood)+theme(text = element_text(family = "Heiti TC Light"))
       }
     }
     
