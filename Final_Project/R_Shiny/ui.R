@@ -147,7 +147,54 @@ shinyUI(navbarPage("選戰懶人包",
                               ),
     
                   navbarMenu("四大報",
-                              tabPanel("四大報文章量分析"), 
+                              tabPanel("四大報文章量分析",sidebarLayout(sidebarPanel(
+                                
+                                selectInput("MediaRES", "媒體",
+                                            choices = list("蘋果" = "Apple", "中時" = "CT", "聯合" ="UDN","自由"="LTN"))
+                               
+                                
+                                
+                                
+                                
+                                
+                                
+                              ),mainPanel(
+                                
+                                h4("Observations"),
+                                plotOutput("Newsreport")
+                                
+                              )
+                              
+                              
+                              
+                              
+                              )), 
+                             
+                              tabPanel("四大報Top文本",sidebarLayout(sidebarPanel(
+                                selectInput("TopCandi", "北市候選人",
+                                            choices = c("柯文哲", "丁守中", "姚文智")),
+                                selectInput("TopMedia", "媒體",
+                                            choices = list("蘋果" = "Apple", "中時" = "CT", "聯合" ="UDN","自由"="LTN")),
+                                numericInput('showsMedia', '顯示項目', 5,
+                                              min = 1, max = 50),
+                                checkboxInput("decreaseMedia", label = "從大排到小", value = TRUE)
+                                
+                                
+                                
+                                
+                                
+                                
+                              ),mainPanel(
+                                
+                                h4("Observations"),
+                                tableOutput("News_TopText")
+                                
+                              )
+                                
+                                
+                                
+                                
+                              )),
                              
                              
                               tabPanel("情緒分析<以候選人分類>",

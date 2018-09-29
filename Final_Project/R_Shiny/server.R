@@ -158,6 +158,33 @@ shinyServer(function(input, output) {
    
     
   })
+ 
+   output$TestPlot <- renderPlot({
+    
+    ## 畫圖 丁守中 柯文哲 姚文智 每半個月發文量
+    Di = FB_Taipei[FB_Taipei$name=="Di",]$halfmonth %>% as.character() %>% as.factor() %>% summary() %>% as.numeric()
+    Ko = FB_Taipei[FB_Taipei$name=="Ko",]$halfmonth %>% as.character() %>% as.factor() %>% summary() %>% as.numeric()
+    Yao = FB_Taipei[FB_Taipei$name=="Yao",]$halfmonth %>% as.character() %>% as.factor() %>% summary() %>% as.numeric()
+    report_sum = data.frame()
+    
+    halfmonth = c("一月上","一月下","二月上","二月下","三月上","三月下","四月上","四月下","五月上","五月下","六月上")
+    report_Di = cbind(Di[1:11],rep("丁守中",time(11)))
+    report_Ko = cbind(Ko[1:11],rep("柯文哲",time(11)))
+    report_Yao = cbind(Yao[1:11],rep("姚文智",time(11)))
+    report_sum <- rbind(report_Di,report_Ko,report_Yao) %>% as.data.frame()
+    report_sum <- report_sum %>% cbind(.,c(halfmonth,halfmonth,halfmonth))
+    
+    
+    colnames(report_sum) <- c("post","name","halfmonth")
+    report_sum$post <- as.numeric(as.character(report_sum$post))
+    report_sum$halfmonth <- report_sum$halfmonth %>% factor(.,c("一月上","一月下","二月上","二月下","三月上","三月下","四月上","四月下","五月上","五月下","六月上"))
+    
+    
+    ggplot(report_sum, aes(x = halfmonth, y = post, colour=name,group=name))+ geom_point(size = 4)+ geom_line() +  scale_color_manual(values=c("blue", "green", "black"))+xlab("time") +scale_fill_discrete(labels=c("丁守中","V","C"))+theme(text = element_text(family = "Heiti TC Light"))
+    
+    
+    
+  })
   
   output$CPplot <- renderPlot({
     
@@ -198,6 +225,40 @@ shinyServer(function(input, output) {
   
   output$Newsreport <- renderPlot({
     
+    News3 <- News2[News2$media==input$MediaRES,] 
+    
+    ggplot(News3, aes(candidate))+ geom_bar(aes(fill = candidate)) +   scale_fill_manual(values=c("blue", "green", "black"))+theme(text = element_text(family = "Heiti TC Light"))
+    
+    
+    
+  })
+  
+  output$News_TopText <- renderTable({
+    
+    if(input$TopCandi=="柯文哲"){
+      df = News2[News2$name=="Ko",]
+    }else if(input$TopCandi=="丁守中"){
+      df = News2[News2$name=="Di",]
+    }else if(input$TopCandi=="姚文智"){
+      df = News2[News2$name=="Yao",]
+    }
+    if(input$TopMedia=="CT"){
+      df2 = df[df$media=="CT",]
+    }else if(input$TopMedia=="LTN"){
+      df2 = df[df$media=="LTN",]
+    }else if(input$TopMedia=="UDN"){
+      df2 = df[df$media=="UDN",]
+    }else if(input$TopMedia=="Apple"){
+      df2 = df[df$media=="Apple",]
+    }
+    
+    
+    
+    df3 <- df2[,c(5,6,7)]
+    df3[df3$sentiment %>% order(.,decreasing = input$decreaseMedia), ] %>% head(.,n = input$showsMedia)
+      
+   
+
     
     
   })
