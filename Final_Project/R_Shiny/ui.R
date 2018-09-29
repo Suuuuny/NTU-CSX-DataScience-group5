@@ -226,7 +226,7 @@ shinyUI(navbarPage("選戰懶人包",
                                           
                                         ),mainPanel(
                                           
-                                          h4("情緒分析<以報紙分類>"),
+                                          h4("情緒分析<以媒體分類>"),
                                           plotOutput("NewsMood2")
                                           
                                         )
