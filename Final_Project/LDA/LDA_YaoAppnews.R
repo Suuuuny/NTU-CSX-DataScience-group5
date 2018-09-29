@@ -12,11 +12,12 @@ library(stringr)
 library(tidytext)
 
 #查看路徑
-getwd()
-setwd("/Users/sunny/Documents/GitHub/courseR/final_project")
+
 
 #讀檔的地方
-testdoc <- read.csv("./Appnews/Yao_Appnews")
+testdoc <- read.csv("FaceBookAPI-Taipei.csv")
+
+testdoc <- testdoc[testdoc$name=="Yao",]
 testdoc <- na.omit(testdoc)
 
 #斷詞
@@ -79,11 +80,12 @@ new_user_word(cutter, c("柯建銘",
                         "蘋果",
                         "蘋果日報"
 ))
-testdoc$words <- sapply(testdoc$content %>% as.character() , function(x){tryCatch({cutter[x]}, error=function(err){})})
+testdoc$words <- sapply(testdoc$post %>% as.character() , function(x){tryCatch({cutter[x]}, error=function(err){})})
 
 #讀取stop words檔
-fin <- file("./Appnews/stopwords_tw.txt", open = "r")
-stopwords <- readLines(fin , encoding = "UTF8") #stopwords 加上表示、報導
+stopwords <- read.csv("stopwords_tw.csv")
+stopwords <- as.vector(t(stopwords))
+#stopwords 加上表示、報導
 stopwords <- c(stopwords,"表示", "報導", "新聞", "重點")#stopwords 加上表示、報導
 stopwords <- unique(stopwords) #刪去重複的stopwords
 
@@ -92,18 +94,23 @@ library(stringr)
 
 word_token <- testdoc %>%
   unnest() %>%
-  select(title, words) %>% #選新聞標題與切字的欄位
+  select(post, words) %>% #選新聞標題與切字的欄位
   filter(!(words %in% stopwords)) %>%
   filter(!str_detect(words, "\\d")) %>% #將某一些不符合正規表達式\\d的字挑掉
+  filter(!str_detect(words, "[A-Za-z0-9]")) %>% 
   filter(nchar(words) > 1) #留下出現次數大於1的詞
 # unnest words and filter words
 
+
 library(tidytext)
-dtm <- word_token %>%
-  count(title, words) %>% 
+dtm <- word_token %>% count(post, words)  
+
+
+dtm$post <- dtm$post %>% as.character()
   #count的語法是說數相同出現的詞出現幾次，然後最後會整理成有title,words和數數欄位的df
-  cast_dtm(title, words, n)
+dtm <- dtm %>%  cast_dtm(post, words, n)
 #cast_dtm的語法是將word_token轉置成每一篇文章是一列，然後每一欄是每個詞出現的次數
+
 
 raw.sum=apply(dtm,1,FUN=sum) #sum by raw each raw of the table #統計每一列出現幾次詞
 dtm=dtm[raw.sum!=0,] #將只有0的列刪掉
@@ -134,3 +141,4 @@ top_terms %>%
   facet_wrap(~ topic, scales = "free") +
   coord_flip() +
   theme(axis.text.y=element_text(colour="black", family="Heiti TC Light"))
+

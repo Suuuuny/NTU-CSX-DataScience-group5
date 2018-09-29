@@ -267,7 +267,7 @@ shinyServer(function(input, output) {
     
     candi <- input$newsCandi %>% as.character()
     ggplot(News[News$candidate==candi,], aes(x=media, y=sentiment,color = media)) + 
-      geom_boxplot()
+      geom_boxplot()+theme(text = element_text(family = "Heiti TC Light"))
     
     
   })
@@ -275,8 +275,8 @@ shinyServer(function(input, output) {
   output$NewsMood2 <- renderPlot({
     
     news <- input$newsName %>% as.character()
-    ggplot(News[News$media==news,], aes(x=name, y=sentiment,color = name)) + scale_color_manual(values=c("blue", "red", "green"))+
-      geom_boxplot()
+    ggplot(News[News$media==news,], aes(x=candidate, y=sentiment,color = candidate)) + scale_color_manual(values=c("blue", "green", "black"))+
+      geom_boxplot()+theme(text = element_text(family = "Heiti TC Light"))
     
     
   })

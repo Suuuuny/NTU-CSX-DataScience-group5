@@ -90,7 +90,7 @@ shinyUI(navbarPage("選戰懶人包",
                                            
                                          ),mainPanel(
                                            
-                                           h4("Observations"),
+                                           
                                            tableOutput("TopText")
                                            
                                          )
@@ -160,7 +160,7 @@ shinyUI(navbarPage("選戰懶人包",
                                 
                               ),mainPanel(
                                 
-                                h4("Observations"),
+                                
                                 plotOutput("Newsreport")
                                 
                               )
@@ -186,7 +186,7 @@ shinyUI(navbarPage("選戰懶人包",
                                 
                               ),mainPanel(
                                 
-                                h4("Observations"),
+                                
                                 tableOutput("News_TopText")
                                 
                               )
@@ -217,14 +217,12 @@ shinyUI(navbarPage("選戰懶人包",
                                        
                                        ),
                              
-                             tabPanel("情緒分析<以報紙分類>",
+                             tabPanel("情緒分析<以媒體分類>",
                                       sidebarLayout(
                                         sidebarPanel(
-                                          selectInput("newsName", "四大媒體",
-                                                      choices = c("UDN", "CT", "LTN","Apple")),
-                                          hr(),
-                                          helpText("Note1: 丁守中Di ; 柯文哲Ko ; 姚文智Yao"),
-                                          helpText("Note2: 蘋果Apple ; 聯合UDN ; 自由LTN ; 中時CT")
+                                          selectInput("newsName", "媒體",
+                                                      choices = list("聯合"="UDN", "中時"="CT", "自由"="LTN","蘋果"="Apple"))
+                                        
                                           
                                         ),mainPanel(
                                           
